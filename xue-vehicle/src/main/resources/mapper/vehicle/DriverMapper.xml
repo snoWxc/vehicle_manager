@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xue.vehicle.mapper.DriverMapper">
+
+    <resultMap type="com.xue.vehicle.entity.Driver" id="DriverResult">
+        <result property="id"    column="id"    />
+        <result property="driverName"    column="driver_name"    />
+        <result property="driverPhone"    column="driver_phone"    />
+        <result property="driverSex"    column="driver_sex"    />
+        <result property="fkVehicleId"    column="fk_vehicle_id"    />
+        <result property="vehiclePlateNumber"    column="vehicle_plate_number"    />
+    </resultMap>
+
+    <sql id="selectDriverVo">
+        select id, driver_name, driver_phone, driver_sex, fk_vehicle_id, vehicle_plate_number from driver
+    </sql>
+
+    <select id="selectDriverList" parameterType="com.xue.vehicle.entity.Driver" resultMap="DriverResult">
+        <include refid="selectDriverVo"/>
+        <where>
+            <if test="driverName != null  and driverName != ''"> and driver_name like concat('%', #{driverName}, '%')</if>
+            <if test="driverPhone != null "> and driver_phone = #{driverPhone}</if>
+            <if test="driverSex != null "> and driver_sex = #{driverSex}</if>
+            <if test="vehiclePlateNumber != null  and vehiclePlateNumber != ''"> and vehicle_plate_number = #{vehiclePlateNumber}</if>
+        </where>
+    </select>
+
+    <select id="selectDriverById" parameterType="Long" resultMap="DriverResult">
+        <include refid="selectDriverVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDriver" parameterType="com.xue.vehicle.entity.Driver" useGeneratedKeys="true" keyProperty="id">
+        insert into driver
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="driverName != null and driverName != ''">driver_name,</if>
+            <if test="driverPhone != null">driver_phone,</if>
+            <if test="driverSex != null">driver_sex,</if>
+            <if test="fkVehicleId != null">fk_vehicle_id,</if>
+            <if test="vehiclePlateNumber != null">vehicle_plate_number,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="driverName != null and driverName != ''">#{driverName},</if>
+            <if test="driverPhone != null">#{driverPhone},</if>
+            <if test="driverSex != null">#{driverSex},</if>
+            <if test="fkVehicleId != null">#{fkVehicleId},</if>
+            <if test="vehiclePlateNumber != null">#{vehiclePlateNumber},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDriver" parameterType="com.xue.vehicle.entity.Driver">
+        update driver
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="driverName != null and driverName != ''">driver_name = #{driverName},</if>
+            <if test="driverPhone != null">driver_phone = #{driverPhone},</if>
+            <if test="driverSex != null">driver_sex = #{driverSex},</if>
+            <if test="fkVehicleId != null">fk_vehicle_id = #{fkVehicleId},</if>
+            <if test="vehiclePlateNumber != null">vehicle_plate_number = #{vehiclePlateNumber},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDriverById" parameterType="Long">
+        delete from driver where id = #{id}
+    </delete>
+
+    <delete id="deleteDriverByIds" parameterType="String">
+        delete from driver where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

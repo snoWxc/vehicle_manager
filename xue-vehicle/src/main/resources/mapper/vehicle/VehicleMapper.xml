@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xue.vehicle.mapper.VehicleMapper">
+    
+    <resultMap type="Vehicle" id="VehicleResult">
+        <result property="id"    column="id"    />
+        <result property="vehicleColor"    column="vehicle_color"    />
+        <result property="vehiclePlateNumber"    column="vehicle_plate_number"    />
+        <result property="vehicleBrand"    column="vehicle_brand"    />
+        <result property="vehicleModel"    column="vehicle_model"    />
+        <result property="isScrap"    column="is_scrap"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectVehicleVo">
+        select id, vehicle_color, vehicle_plate_number, vehicle_brand, vehicle_model, is_scrap, status from vehicle
+    </sql>
+
+    <select id="selectVehicleList" parameterType="Vehicle" resultMap="VehicleResult">
+        <include refid="selectVehicleVo"/>
+        <where>  
+            <if test="vehicleColor != null  and vehicleColor != ''"> and vehicle_color = #{vehicleColor}</if>
+            <if test="vehiclePlateNumber != null  and vehiclePlateNumber != ''"> and vehicle_plate_number = #{vehiclePlateNumber}</if>
+            <if test="vehicleBrand != null  and vehicleBrand != ''"> and vehicle_brand = #{vehicleBrand}</if>
+            <if test="vehicleModel != null  and vehicleModel != ''"> and vehicle_model = #{vehicleModel}</if>
+            <if test="isScrap != null "> and is_scrap = #{isScrap}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectVehicleById" parameterType="Long" resultMap="VehicleResult">
+        <include refid="selectVehicleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertVehicle" parameterType="Vehicle" useGeneratedKeys="true" keyProperty="id">
+        insert into vehicle
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="vehicleColor != null">vehicle_color,</if>
+            <if test="vehiclePlateNumber != null">vehicle_plate_number,</if>
+            <if test="vehicleBrand != null">vehicle_brand,</if>
+            <if test="vehicleModel != null">vehicle_model,</if>
+            <if test="isScrap != null">is_scrap,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="vehicleColor != null">#{vehicleColor},</if>
+            <if test="vehiclePlateNumber != null">#{vehiclePlateNumber},</if>
+            <if test="vehicleBrand != null">#{vehicleBrand},</if>
+            <if test="vehicleModel != null">#{vehicleModel},</if>
+            <if test="isScrap != null">#{isScrap},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVehicle" parameterType="Vehicle">
+        update vehicle
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vehicleColor != null">vehicle_color = #{vehicleColor},</if>
+            <if test="vehiclePlateNumber != null">vehicle_plate_number = #{vehiclePlateNumber},</if>
+            <if test="vehicleBrand != null">vehicle_brand = #{vehicleBrand},</if>
+            <if test="vehicleModel != null">vehicle_model = #{vehicleModel},</if>
+            <if test="isScrap != null">is_scrap = #{isScrap},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVehicleById" parameterType="Long">
+        delete from vehicle where id = #{id}
+    </delete>
+
+    <delete id="deleteVehicleByIds" parameterType="String">
+        delete from vehicle where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
