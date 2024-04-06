@@ -3,8 +3,8 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xue.vehicle.mapper.VehicleMapper">
-    
-    <resultMap type="Vehicle" id="VehicleResult">
+
+    <resultMap type="com.xue.vehicle.entity.Vehicle" id="VehicleResult">
         <result property="id"    column="id"    />
         <result property="vehicleColor"    column="vehicle_color"    />
         <result property="vehiclePlateNumber"    column="vehicle_plate_number"    />
@@ -18,9 +18,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, vehicle_color, vehicle_plate_number, vehicle_brand, vehicle_model, is_scrap, status from vehicle
     </sql>
 
-    <select id="selectVehicleList" parameterType="Vehicle" resultMap="VehicleResult">
+    <select id="selectVehicleList" parameterType="com.xue.vehicle.entity.Vehicle" resultMap="VehicleResult">
         <include refid="selectVehicleVo"/>
-        <where>  
+        <where>
             <if test="vehicleColor != null  and vehicleColor != ''"> and vehicle_color = #{vehicleColor}</if>
             <if test="vehiclePlateNumber != null  and vehiclePlateNumber != ''"> and vehicle_plate_number = #{vehiclePlateNumber}</if>
             <if test="vehicleBrand != null  and vehicleBrand != ''"> and vehicle_brand = #{vehicleBrand}</if>
@@ -29,13 +29,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null "> and status = #{status}</if>
         </where>
     </select>
-    
+
     <select id="selectVehicleById" parameterType="Long" resultMap="VehicleResult">
         <include refid="selectVehicleVo"/>
         where id = #{id}
     </select>
-        
-    <insert id="insertVehicle" parameterType="Vehicle" useGeneratedKeys="true" keyProperty="id">
+
+    <insert id="insertVehicle" parameterType="com.xue.vehicle.entity.Vehicle" useGeneratedKeys="true" keyProperty="id">
         insert into vehicle
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="vehicleColor != null">vehicle_color,</if>
@@ -55,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateVehicle" parameterType="Vehicle">
+    <update id="updateVehicle" parameterType="com.xue.vehicle.entity.Vehicle">
         update vehicle
         <trim prefix="SET" suffixOverrides=",">
             <if test="vehicleColor != null">vehicle_color = #{vehicleColor},</if>
@@ -73,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteVehicleByIds" parameterType="String">
-        delete from vehicle where id in 
+        delete from vehicle where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

@@ -2,6 +2,7 @@ package com.xue.vehicle.mapper;
 
 import java.util.List;
 import com.xue.vehicle.entity.Vehicle;
+import org.springframework.stereotype.Repository;
 
 /**
  * 车辆Mapper接口
@@ -9,6 +10,7 @@ import com.xue.vehicle.entity.Vehicle;
  * @author wxc
  * @date 2024-04-06
  */
+@Repository
 public interface VehicleMapper
 {
     /**

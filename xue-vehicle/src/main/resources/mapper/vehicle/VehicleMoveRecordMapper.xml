@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xue.vehicle.mapper.VehicleMoveRecordMapper">
+
+    <resultMap type="com.xue.vehicle.entity.VehicleMoveRecord" id="VehicleMoveRecordResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="vehicleId"    column="vehicle_id"    />
+        <result property="driverId"    column="driver_id"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectVehicleMoveRecordVo">
+        select id, create_time, vehicle_id, driver_id, type from vehicle_move_record
+    </sql>
+
+    <select id="selectVehicleMoveRecordList" parameterType="com.xue.vehicle.entity.VehicleMoveRecord" resultMap="VehicleMoveRecordResult">
+        <include refid="selectVehicleMoveRecordVo"/>
+        <where>
+            <if test="vehicleId != null "> and vehicle_id = #{vehicleId}</if>
+            <if test="driverId != null "> and driver_id = #{driverId}</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+
+    <select id="selectVehicleMoveRecordById" parameterType="Long" resultMap="VehicleMoveRecordResult">
+        <include refid="selectVehicleMoveRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertVehicleMoveRecord" parameterType="com.xue.vehicle.entity.VehicleMoveRecord">
+        insert into vehicle_move_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="vehicleId != null">vehicle_id,</if>
+            <if test="driverId != null">driver_id,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="vehicleId != null">#{vehicleId},</if>
+            <if test="driverId != null">#{driverId},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVehicleMoveRecord" parameterType="com.xue.vehicle.entity.VehicleMoveRecord">
+        update vehicle_move_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="vehicleId != null">vehicle_id = #{vehicleId},</if>
+            <if test="driverId != null">driver_id = #{driverId},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVehicleMoveRecordById" parameterType="Long">
+        delete from vehicle_move_record where id = #{id}
+    </delete>
+
+    <delete id="deleteVehicleMoveRecordByIds" parameterType="String">
+        delete from vehicle_move_record where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
