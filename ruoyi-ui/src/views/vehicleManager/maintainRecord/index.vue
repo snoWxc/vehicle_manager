@@ -17,14 +17,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="保养进行时长" prop="maintainDuration">
-        <el-input
-          v-model="queryParams.maintainDuration"
-          placeholder="请输入保养进行时长"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="进行保养的车辆id" prop="fkVehicleId">
         <el-input
           v-model="queryParams.fkVehicleId"

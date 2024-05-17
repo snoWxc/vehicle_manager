@@ -54,7 +54,7 @@ public class VehicleMoveRecordController extends BaseController
     @PreAuthorize("@ss.hasPermi('vehicle:moveRecord:export')")
     @Log(title = "车辆回车或出勤", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, VehicleMoveRecord vehicleMoveRecord)
+    public void export(HttpServletResponse response, VehicleMoveRecordVO vehicleMoveRecord)
     {
         List<VehicleMoveRecord> list = vehicleMoveRecordService.selectVehicleMoveRecordList(vehicleMoveRecord);
         ExcelUtil<VehicleMoveRecord> util = new ExcelUtil<VehicleMoveRecord>(VehicleMoveRecord.class);

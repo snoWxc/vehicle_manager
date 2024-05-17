@@ -2,10 +2,10 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item prop="vehiclePlateNumber">
-        <el-input v-model="queryParams.vehiclePlateNumber" placeholder="请输入维修项目名称" @keyup.enter.native="handleQuery"></el-input>
+        <el-input v-model="queryParams.vehiclePlateNumber" placeholder="请输入车牌号" @keyup.enter.native="handleQuery"></el-input>
       </el-form-item>
       <el-form-item prop="type">
-        <el-radio-group v-model="queryParams.type" @change="getList">
+        <el-radio-group v-model="queryParams.type" @change="handleQuery">
           <el-radio :label="0">出勤</el-radio>
           <el-radio :label="1">回车</el-radio>
         </el-radio-group>
