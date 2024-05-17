@@ -1,29 +1,16 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="100px">
-      <el-form-item label="驾驶员姓名" prop="driverName">
-        <el-input
-          v-model="queryParams.driverName"
-          placeholder="请输入驾驶员姓名"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="driverName">
+        <el-input v-model="queryParams.driverName" placeholder="请输入驾驶员姓名" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="驾驶员电话" prop="driverPhone">
-        <el-input
-          v-model="queryParams.driverPhone"
-          placeholder="请输入驾驶员电话"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="driverPhone">
+        <el-input v-model="queryParams.driverPhone" placeholder="请输入驾驶员电话" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="车牌号" prop="vehiclePlateNumber">
-        <el-input
-          v-model="queryParams.vehiclePlateNumber"
-          placeholder="请输入车牌号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="vehiclePlateNumber">
+        <el-input v-model="queryParams.vehiclePlateNumber" placeholder="请输入车牌号" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
@@ -33,46 +20,20 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:driver:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+          v-hasPermi="['system:driver:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:driver:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['system:driver:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:driver:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['system:driver:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:driver:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
+          v-hasPermi="['system:driver:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -82,7 +43,7 @@
       <el-table-column label="序号" align="center" type="index" />
       <el-table-column label="驾驶员姓名" align="center" prop="driverName" />
       <el-table-column label="驾驶员电话" align="center" prop="driverPhone" />
-      <el-table-column label="驾驶员性别" align="center" prop="driverSex" >
+      <el-table-column label="驾驶员性别" align="center" prop="driverSex">
         <template slot-scope="scope">
           <span v-if="scope.row.driverSex == 0">女</span>
           <span v-if="scope.row.driverSex == 1">男</span>
@@ -91,31 +52,16 @@
       <el-table-column label="车牌号" align="center" prop="vehiclePlateNumber" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:driver:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:driver:remove']"
-          >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:driver:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['system:driver:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改驾驶员信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -126,11 +72,11 @@
         <el-form-item label="驾驶员电话" prop="driverPhone">
           <el-input v-model="form.driverPhone" placeholder="请输入驾驶员电话" />
         </el-form-item>
-        <el-form-item label="外键车辆id" prop="fkVehicleId">
-          <el-input v-model="form.fkVehicleId" placeholder="请输入外键车辆id" />
-        </el-form-item>
-        <el-form-item label="车牌号" prop="vehiclePlateNumber">
-          <el-input v-model="form.vehiclePlateNumber" placeholder="请输入车牌号" />
+        <el-form-item label="选择绑定车辆" prop="fkVehicleId">
+          <el-select v-model="form.fkVehicleId">
+            <el-option v-for="item in vehicleList" :key="item.id" :label="item.vehiclePlateNumber" :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -143,7 +89,7 @@
 
 <script>
 import { listDriver, getDriver, delDriver, addDriver, updateDriver } from "@/api/vehicle/driver";
-
+import { listVehicle } from "@/api/vehicle/vehicle";
 export default {
   name: "Driver",
   data() {
@@ -177,6 +123,8 @@ export default {
       },
       // 表单参数
       form: {},
+      // 车辆列表
+      vehicleList: [],
       // 表单校验
       rules: {
         driverName: [
@@ -203,6 +151,13 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    },
+    /** 获取车辆列表 */
+    getVehicle() {
+      let query = {};
+      listVehicle(query).then(res => {
+        this.vehicleList = res.rows
+      })
     },
     // 取消按钮
     cancel() {
@@ -234,7 +189,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -276,12 +231,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除驾驶员信息编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除驾驶员信息编号为"' + ids + '"的数据项？').then(function () {
         return delDriver(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {

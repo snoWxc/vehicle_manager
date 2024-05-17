@@ -2,6 +2,7 @@ package com.xue.vehicle.mapper;
 
 import java.util.List;
 import com.xue.vehicle.entity.VehicleMoveRecord;
+import com.xue.vehicle.entity.vo.VehicleMoveRecordVO;
 
 /**
  * 车辆回车或出勤Mapper接口
@@ -25,7 +26,7 @@ public interface VehicleMoveRecordMapper
      * @param vehicleMoveRecord 车辆回车或出勤
      * @return 车辆回车或出勤集合
      */
-    public List<VehicleMoveRecord> selectVehicleMoveRecordList(VehicleMoveRecord vehicleMoveRecord);
+    public List<VehicleMoveRecord> selectVehicleMoveRecordList(VehicleMoveRecordVO vehicleMoveRecord);
 
     /**
      * 新增车辆回车或出勤

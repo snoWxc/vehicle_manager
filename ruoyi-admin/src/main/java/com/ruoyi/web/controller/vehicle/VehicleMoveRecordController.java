@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.vehicle;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.xue.vehicle.entity.vo.VehicleMoveRecordVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,9 +39,9 @@ public class VehicleMoveRecordController extends BaseController
     /**
      * 查询车辆回车或出勤列表
      */
-    @PreAuthorize("@ss.hasPermi('vehicle:moveRecord:list')")
+//    @PreAuthorize("@ss.hasPermi('vehicle:moveRecord:list')")
     @GetMapping("/list")
-    public TableDataInfo list(VehicleMoveRecord vehicleMoveRecord)
+    public TableDataInfo list(VehicleMoveRecordVO vehicleMoveRecord)
     {
         startPage();
         List<VehicleMoveRecord> list = vehicleMoveRecordService.selectVehicleMoveRecordList(vehicleMoveRecord);

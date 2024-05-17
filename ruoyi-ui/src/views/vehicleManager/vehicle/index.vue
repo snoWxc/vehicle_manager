@@ -1,94 +1,54 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="车辆颜色" prop="vehicleColor">
-        <el-input
-          v-model="queryParams.vehicleColor"
-          placeholder="请输入车辆颜色"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+      <el-form-item prop="vehicleColor">
+        <el-input v-model="queryParams.vehicleColor" placeholder="请输入车辆颜色" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="车辆车牌号" prop="vehiclePlateNumber">
-        <el-input
-          v-model="queryParams.vehiclePlateNumber"
-          placeholder="请输入车辆车牌号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="vehiclePlateNumber">
+        <el-input v-model="queryParams.vehiclePlateNumber" placeholder="请输入车辆车牌号" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="车辆品牌" prop="vehicleBrand">
-        <el-input
-          v-model="queryParams.vehicleBrand"
-          placeholder="请输入车辆品牌"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="vehicleBrand">
+        <el-input v-model="queryParams.vehicleBrand" placeholder="请输入车辆品牌" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="车辆型号" prop="vehicleModel">
-        <el-input
-          v-model="queryParams.vehicleModel"
-          placeholder="请输入车辆型号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="vehicleModel">
+        <el-input v-model="queryParams.vehicleModel" placeholder="请输入车辆型号" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="是否报废：0未报废，1已报废" prop="isScrap">
-        <el-input
-          v-model="queryParams.isScrap"
-          placeholder="请输入是否报废：0未报废，1已报废"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="isScrap">
+        <el-radio-group v-model="queryParams.isScrap">
+          <el-radio :label="0">
+            未报废
+          </el-radio>
+          <el-radio :label="1">
+            已报废
+          </el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['vehicle:vehicle:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+          v-hasPermi="['vehicle:vehicle:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['vehicle:vehicle:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['vehicle:vehicle:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['vehicle:vehicle:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['vehicle:vehicle:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['vehicle:vehicle:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
+          v-hasPermi="['vehicle:vehicle:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -100,35 +60,29 @@
       <el-table-column label="车辆车牌号" align="center" prop="vehiclePlateNumber" />
       <el-table-column label="车辆品牌" align="center" prop="vehicleBrand" />
       <el-table-column label="车辆型号" align="center" prop="vehicleModel" />
-      <el-table-column label="是否报废：0未报废，1已报废" align="center" prop="isScrap" />
-      <el-table-column label="当前状态：0已回车，1已出勤" align="center" prop="status" />
+      <el-table-column label="是否报废" align="center" prop="isScrap">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isScrap == 0">未报废</span>
+          <span v-if="scope.row.isScrap == 1">已报废</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="当前状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <span v-if="scope.row.status == 0">未出车</span>
+          <span v-if="scope.row.status == 1">已出车</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['vehicle:vehicle:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['vehicle:vehicle:remove']"
-          >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="setScrap(scope.row)">已报废</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改车辆对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -136,7 +90,7 @@
         <el-form-item label="车辆颜色" prop="vehicleColor">
           <el-input v-model="form.vehicleColor" placeholder="请输入车辆颜色" />
         </el-form-item>
-        <el-form-item label="车辆车牌号" prop="vehiclePlateNumber">
+        <el-form-item label="车牌号" prop="vehiclePlateNumber">
           <el-input v-model="form.vehiclePlateNumber" placeholder="请输入车辆车牌号" />
         </el-form-item>
         <el-form-item label="车辆品牌" prop="vehicleBrand">
@@ -145,8 +99,11 @@
         <el-form-item label="车辆型号" prop="vehicleModel">
           <el-input v-model="form.vehicleModel" placeholder="请输入车辆型号" />
         </el-form-item>
-        <el-form-item label="是否报废：0未报废，1已报废" prop="isScrap">
-          <el-input v-model="form.isScrap" placeholder="请输入是否报废：0未报废，1已报废" />
+        <el-form-item label="是否报废" prop="isScrap">
+          <el-radio-group v-model="form.isScrap">
+            <el-radio :label="0">未报废</el-radio>
+            <el-radio :label="1">已报废</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -244,7 +201,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -286,12 +243,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除车辆编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除车辆编号为"' + ids + '"的数据项？').then(function () {
         return delVehicle(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {

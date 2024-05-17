@@ -16,12 +16,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, create_time, vehicle_id, driver_id, type from vehicle_move_record
     </sql>
 
-    <select id="selectVehicleMoveRecordList" parameterType="com.xue.vehicle.entity.VehicleMoveRecord" resultMap="VehicleMoveRecordResult">
-        <include refid="selectVehicleMoveRecordVo"/>
+    <select id="selectVehicleMoveRecordList" parameterType="com.xue.vehicle.entity.vo.VehicleMoveRecordVO" resultMap="VehicleMoveRecordResult">
+        select vmr.id, vmr.create_time, vmr.vehicle_id, vmr.driver_id, vmr.type from vehicle_move_record vmr
+        left join vehicle v on v.id = vmr.vehicle_id
         <where>
-            <if test="vehicleId != null "> and vehicle_id = #{vehicleId}</if>
-            <if test="driverId != null "> and driver_id = #{driverId}</if>
             <if test="type != null "> and type = #{type}</if>
+            <if test="vehiclePlateNumber != null "> and v.vehiclePlateNumber = #{vehiclePlateNumber}</if>
         </where>
     </select>
 

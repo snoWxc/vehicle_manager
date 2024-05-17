@@ -2,6 +2,7 @@ package com.xue.vehicle.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.xue.vehicle.entity.vo.VehicleMoveRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.xue.vehicle.mapper.VehicleMoveRecordMapper;
@@ -39,7 +40,7 @@ public class VehicleMoveRecordServiceImpl implements IVehicleMoveRecordService
      * @return 车辆回车或出勤
      */
     @Override
-    public List<VehicleMoveRecord> selectVehicleMoveRecordList(VehicleMoveRecord vehicleMoveRecord)
+    public List<VehicleMoveRecord> selectVehicleMoveRecordList(VehicleMoveRecordVO vehicleMoveRecord)
     {
         return vehicleMoveRecordMapper.selectVehicleMoveRecordList(vehicleMoveRecord);
     }
