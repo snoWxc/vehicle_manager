@@ -134,7 +134,7 @@ export default {
           { required: true, message: "驾驶员电话不能为空", trigger: "blur" }
         ],
         driverSex: [
-          { required: true, message: "驾驶员性别，0女性，1男性不能为空", trigger: "change" }
+          { required: true, message: "驾驶员性别不能为空", trigger: "change" }
         ],
       }
     };
@@ -195,6 +195,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.getVehicle();
       this.open = true;
       this.title = "添加驾驶员信息";
     },

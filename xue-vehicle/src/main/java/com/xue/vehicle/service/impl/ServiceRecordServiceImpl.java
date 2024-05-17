@@ -1,6 +1,8 @@
 package com.xue.vehicle.service.impl;
 
 import java.util.List;
+
+import com.xue.vehicle.entity.vo.ServiceRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.xue.vehicle.mapper.ServiceRecordMapper;
@@ -38,7 +40,7 @@ public class ServiceRecordServiceImpl implements IServiceRecordService
      * @return 车辆维修记录
      */
     @Override
-    public List<ServiceRecord> selectServiceRecordList(ServiceRecord serviceRecord)
+    public List<ServiceRecordVO> selectServiceRecordList(ServiceRecordVO serviceRecord)
     {
         return serviceRecordMapper.selectServiceRecordList(serviceRecord);
     }

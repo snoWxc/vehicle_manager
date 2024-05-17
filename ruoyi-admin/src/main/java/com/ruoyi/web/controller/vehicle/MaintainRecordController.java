@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.vehicle;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.xue.vehicle.entity.vo.MaintainRecordVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +41,10 @@ public class MaintainRecordController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('vehicle:maintainRecord:list')")
     @GetMapping("/list")
-    public TableDataInfo list(MaintainRecord maintainRecord)
+    public TableDataInfo list(MaintainRecordVO maintainRecord)
     {
         startPage();
-        List<MaintainRecord> list = maintainRecordService.selectMaintainRecordList(maintainRecord);
+        List<MaintainRecordVO> list = maintainRecordService.selectMaintainRecordList(maintainRecord);
         return getDataTable(list);
     }
 
@@ -52,11 +54,11 @@ public class MaintainRecordController extends BaseController
     @PreAuthorize("@ss.hasPermi('vehicle:maintainRecord:export')")
     @Log(title = "车辆保养记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, MaintainRecord maintainRecord)
+    public void export(HttpServletResponse response, MaintainRecordVO maintainRecord)
     {
-        List<MaintainRecord> list = maintainRecordService.selectMaintainRecordList(maintainRecord);
-        ExcelUtil<MaintainRecord> util = new ExcelUtil<MaintainRecord>(MaintainRecord.class);
-        util.exportExcel(response, list, "车辆保养记录数据");
+//        List<MaintainRecord> list = maintainRecordService.selectMaintainRecordList(maintainRecord);
+//        ExcelUtil<MaintainRecord> util = new ExcelUtil<MaintainRecord>(MaintainRecord.class);
+//        util.exportExcel(response, list, "车辆保养记录数据");
     }
 
     /**

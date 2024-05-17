@@ -12,16 +12,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="type"    column="type"    />
     </resultMap>
 
+    <resultMap id="VehicleMoveRecordVOResult" type="com.xue.vehicle.entity.vo.VehicleMoveRecordVO">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="vehicleId"    column="vehicle_id"    />
+        <result property="driverId"    column="driver_id"    />
+        <result property="type"    column="type"    />
+        <result property="driverName" column="driver_name"/>
+        <result property="vehiclePlateNumber" column="vehicle_plate_number"/>
+    </resultMap>
+
     <sql id="selectVehicleMoveRecordVo">
         select id, create_time, vehicle_id, driver_id, type from vehicle_move_record
     </sql>
 
-    <select id="selectVehicleMoveRecordList" parameterType="com.xue.vehicle.entity.vo.VehicleMoveRecordVO" resultMap="VehicleMoveRecordResult">
-        select vmr.id, vmr.create_time, vmr.vehicle_id, vmr.driver_id, vmr.type from vehicle_move_record vmr
+    <select id="selectVehicleMoveRecordList" parameterType="com.xue.vehicle.entity.vo.VehicleMoveRecordVO" resultMap="VehicleMoveRecordVOResult">
+        select vmr.id, vmr.create_time, vmr.vehicle_id, vmr.driver_id, vmr.type,v.vehicle_plate_number,d.driver_name from vehicle_move_record vmr
         left join vehicle v on v.id = vmr.vehicle_id
+        left join driver d on d.id = vmr.driver_id
         <where>
             <if test="type != null "> and type = #{type}</if>
-            <if test="vehiclePlateNumber != null "> and v.vehiclePlateNumber = #{vehiclePlateNumber}</if>
+            <if test="vehiclePlateNumber != null "> and v.vehicle_plate_number like concat('%', #{vehiclePlateNumber}, '%') </if>
         </where>
     </select>
 

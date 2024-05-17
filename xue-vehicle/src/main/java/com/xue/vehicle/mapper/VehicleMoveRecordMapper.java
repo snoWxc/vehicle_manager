@@ -26,7 +26,7 @@ public interface VehicleMoveRecordMapper
      * @param vehicleMoveRecord 车辆回车或出勤
      * @return 车辆回车或出勤集合
      */
-    public List<VehicleMoveRecord> selectVehicleMoveRecordList(VehicleMoveRecordVO vehicleMoveRecord);
+    public List<VehicleMoveRecordVO> selectVehicleMoveRecordList(VehicleMoveRecordVO vehicleMoveRecord);
 
     /**
      * 新增车辆回车或出勤

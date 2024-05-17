@@ -44,7 +44,7 @@ public class VehicleMoveRecordController extends BaseController
     public TableDataInfo list(VehicleMoveRecordVO vehicleMoveRecord)
     {
         startPage();
-        List<VehicleMoveRecord> list = vehicleMoveRecordService.selectVehicleMoveRecordList(vehicleMoveRecord);
+        List<VehicleMoveRecordVO> list = vehicleMoveRecordService.selectVehicleMoveRecordList(vehicleMoveRecord);
         return getDataTable(list);
     }
 
@@ -56,9 +56,9 @@ public class VehicleMoveRecordController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, VehicleMoveRecordVO vehicleMoveRecord)
     {
-        List<VehicleMoveRecord> list = vehicleMoveRecordService.selectVehicleMoveRecordList(vehicleMoveRecord);
-        ExcelUtil<VehicleMoveRecord> util = new ExcelUtil<VehicleMoveRecord>(VehicleMoveRecord.class);
-        util.exportExcel(response, list, "车辆回车或出勤数据");
+//        List<VehicleMoveRecordVO> list = vehicleMoveRecordService.selectVehicleMoveRecordList(vehicleMoveRecord);
+//        ExcelUtil<VehicleMoveRecord> util = new ExcelUtil<VehicleMoveRecord>(VehicleMoveRecord.class);
+//        util.exportExcel(response, list, "车辆回车或出勤数据");
     }
 
     /**

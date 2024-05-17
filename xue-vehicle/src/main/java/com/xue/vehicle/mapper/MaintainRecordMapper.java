@@ -2,6 +2,7 @@ package com.xue.vehicle.mapper;
 
 import java.util.List;
 import com.xue.vehicle.entity.MaintainRecord;
+import com.xue.vehicle.entity.vo.MaintainRecordVO;
 
 /**
  * 车辆保养记录Mapper接口
@@ -25,7 +26,7 @@ public interface MaintainRecordMapper
      * @param maintainRecord 车辆保养记录
      * @return 车辆保养记录集合
      */
-    public List<MaintainRecord> selectMaintainRecordList(MaintainRecord maintainRecord);
+    public List<MaintainRecordVO> selectMaintainRecordList(MaintainRecordVO maintainRecord);
 
     /**
      * 新增车辆保养记录

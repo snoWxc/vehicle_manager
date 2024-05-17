@@ -2,6 +2,7 @@ package com.xue.vehicle.mapper;
 
 import java.util.List;
 import com.xue.vehicle.entity.ServiceRecord;
+import com.xue.vehicle.entity.vo.ServiceRecordVO;
 
 /**
  * 车辆维修记录Mapper接口
@@ -25,7 +26,7 @@ public interface ServiceRecordMapper
      * @param serviceRecord 车辆维修记录
      * @return 车辆维修记录集合
      */
-    public List<ServiceRecord> selectServiceRecordList(ServiceRecord serviceRecord);
+    public List<ServiceRecordVO> selectServiceRecordList(ServiceRecordVO serviceRecord);
 
     /**
      * 新增车辆维修记录

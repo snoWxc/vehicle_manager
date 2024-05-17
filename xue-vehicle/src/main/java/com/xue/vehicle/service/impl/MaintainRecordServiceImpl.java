@@ -1,6 +1,8 @@
 package com.xue.vehicle.service.impl;
 
 import java.util.List;
+
+import com.xue.vehicle.entity.vo.MaintainRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.xue.vehicle.mapper.MaintainRecordMapper;
@@ -38,7 +40,7 @@ public class MaintainRecordServiceImpl implements IMaintainRecordService
      * @return 车辆保养记录
      */
     @Override
-    public List<MaintainRecord> selectMaintainRecordList(MaintainRecord maintainRecord)
+    public List<MaintainRecordVO> selectMaintainRecordList(MaintainRecordVO maintainRecord)
     {
         return maintainRecordMapper.selectMaintainRecordList(maintainRecord);
     }

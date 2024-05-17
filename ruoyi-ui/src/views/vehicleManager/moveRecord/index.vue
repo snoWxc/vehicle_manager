@@ -39,8 +39,8 @@
     <el-table v-loading="loading" :data="moveRecordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" type="index" />
-      <el-table-column label="车辆id" align="center" prop="vehicleId" />
-      <el-table-column label="驾驶员id" align="center" prop="driverId" />
+      <el-table-column label="车辆车牌" align="center" prop="vehiclePlateNumber" />
+      <el-table-column label="驾驶员" align="center" prop="driverName" />
       <el-table-column label="登记类型" align="center" prop="type">
         <template slot-scope="scope">
           <span v-if="scope.row.type == 0">回车</span>
@@ -63,11 +63,21 @@
     <!-- 添加或修改车辆回车或出勤对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="车辆id" prop="vehicleId">
-          <el-input v-model="form.vehicleId" placeholder="请输入车辆id" />
+        <el-form-item label="车辆" prop="vehicleId">
+          <el-select v-model="form.vehicleId">
+            <el-option v-for="item in vehicleList" :key="item.id" :value="item.id" :label="item.vehiclePlateNumber"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="驾驶员id" prop="driverId">
-          <el-input v-model="form.driverId" placeholder="请输入驾驶员id" />
+        <el-form-item label="驾驶员" prop="driverId">
+          <el-select v-model="form.driverId">
+            <el-option v-for="item in driverList" :key="item.id" :value="item.id" :label="item.driverName"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="行为类型" prop="type">
+          <el-radio-group v-model="form.type">
+            <el-radio :label="0">回车</el-radio>
+            <el-radio :label="1">出勤</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -80,11 +90,16 @@
 
 <script>
 import { listMoveRecord, getMoveRecord, delMoveRecord, addMoveRecord, updateMoveRecord } from "@/api/vehicle/moveRecord";
-
+import { listDriver } from "@/api/vehicle/driver";
+import { listVehicle } from "@/api/vehicle/vehicle";
 export default {
   name: "MoveRecord",
   data() {
     return {
+      //驾驶员列表
+      driverList:[],
+      //车辆列表
+      vehicleList: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -131,6 +146,20 @@ export default {
         this.loading = false;
       });
     },
+    /** 获取所有驾驶员 */
+    getDriver(){
+      let query = {}
+      listDriver(query).then(res => {
+        this.driverList = res.rows
+      })
+    },
+    /** 获取所有车辆 */
+    getVehicle(){
+      let query = {}
+      listVehicle(query).then( res => {
+        this.vehicleList = res.rows
+      })
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -166,6 +195,8 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.getVehicle();
+      this.getDriver();
       this.open = true;
       this.title = "添加车辆回车或出勤";
     },

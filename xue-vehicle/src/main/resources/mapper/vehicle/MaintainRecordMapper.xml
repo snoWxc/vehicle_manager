@@ -13,18 +13,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="fkDriverId"    column="fk_driver_id"    />
     </resultMap>
 
+    <resultMap id="MaintainRecordVOResult" type="com.xue.vehicle.entity.vo.MaintainRecordVO">
+        <result property="id"    column="id"    />
+        <result property="maintainTime"    column="maintain_time"    />
+        <result property="maintainName"    column="maintain_name"    />
+        <result property="maintainDuration"    column="maintain_duration"    />
+        <result property="fkVehicleId"    column="fk_vehicle_id"    />
+        <result property="fkDriverId"    column="fk_driver_id"    />
+        <result property="driverName" column="driver_name"/>
+        <result property="vehiclePlateNumber" column="vehicle_plate_number"/>
+    </resultMap>
+
     <sql id="selectMaintainRecordVo">
         select id, maintain_time, maintain_name, maintain_duration, fk_vehicle_id, fk_driver_id from maintain_record
     </sql>
 
-    <select id="selectMaintainRecordList" parameterType="com.xue.vehicle.entity.MaintainRecord" resultMap="MaintainRecordResult">
-        <include refid="selectMaintainRecordVo"/>
+    <select id="selectMaintainRecordList" parameterType="com.xue.vehicle.entity.vo.MaintainRecordVO" resultMap="MaintainRecordVOResult">
+        select mr.id, mr.maintain_time, mr.maintain_name, mr.maintain_duration, mr.fk_vehicle_id, mr.fk_driver_id,v.vehicle_plate_number, d.driver_name from maintain_record mr
+        left join vehicle v on v.id = mr.fk_vehicle_id
+        left join driver d on d.id = mr.fk_driver_id
         <where>
             <if test="maintainTime != null "> and maintain_time = #{maintainTime}</if>
             <if test="maintainName != null  and maintainName != ''"> and maintain_name like concat('%', #{maintainName}, '%')</if>
             <if test="maintainDuration != null "> and maintain_duration = #{maintainDuration}</if>
             <if test="fkVehicleId != null "> and fk_vehicle_id = #{fkVehicleId}</if>
             <if test="fkDriverId != null "> and fk_driver_id = #{fkDriverId}</if>
+            <if test="driverName != null "> and d.driver_name like  concat('%', #{driverName} , '%')</if>
+            <if test="vehiclePlateNumber != null "> and v.vehicle_plate_number like concat('%', #{vehiclePlateNumber}, '%') </if>
         </where>
     </select>
 

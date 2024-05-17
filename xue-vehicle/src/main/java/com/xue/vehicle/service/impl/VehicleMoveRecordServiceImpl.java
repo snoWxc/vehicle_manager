@@ -3,7 +3,7 @@ package com.xue.vehicle.service.impl;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import com.xue.vehicle.entity.vo.VehicleMoveRecordVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.xue.vehicle.service.IVehicleService;
 import org.springframework.stereotype.Service;
 import com.xue.vehicle.mapper.VehicleMoveRecordMapper;
 import com.xue.vehicle.entity.VehicleMoveRecord;
@@ -18,8 +18,13 @@ import com.xue.vehicle.service.IVehicleMoveRecordService;
 @Service
 public class VehicleMoveRecordServiceImpl implements IVehicleMoveRecordService
 {
-    @Autowired
-    private VehicleMoveRecordMapper vehicleMoveRecordMapper;
+    private final VehicleMoveRecordMapper vehicleMoveRecordMapper;
+    private final IVehicleService vehicleService;
+
+    public VehicleMoveRecordServiceImpl(VehicleMoveRecordMapper vehicleMoveRecordMapper, IVehicleService vehicleService) {
+        this.vehicleMoveRecordMapper = vehicleMoveRecordMapper;
+        this.vehicleService = vehicleService;
+    }
 
     /**
      * 查询车辆回车或出勤
@@ -40,7 +45,7 @@ public class VehicleMoveRecordServiceImpl implements IVehicleMoveRecordService
      * @return 车辆回车或出勤
      */
     @Override
-    public List<VehicleMoveRecord> selectVehicleMoveRecordList(VehicleMoveRecordVO vehicleMoveRecord)
+    public List<VehicleMoveRecordVO> selectVehicleMoveRecordList(VehicleMoveRecordVO vehicleMoveRecord)
     {
         return vehicleMoveRecordMapper.selectVehicleMoveRecordList(vehicleMoveRecord);
     }
@@ -55,6 +60,7 @@ public class VehicleMoveRecordServiceImpl implements IVehicleMoveRecordService
     public int insertVehicleMoveRecord(VehicleMoveRecord vehicleMoveRecord)
     {
         vehicleMoveRecord.setCreateTime(DateUtils.getNowDate());
+
         return vehicleMoveRecordMapper.insertVehicleMoveRecord(vehicleMoveRecord);
     }
 

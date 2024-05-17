@@ -1,45 +1,25 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="维修项目名称" prop="serviceName">
-        <el-input
-          v-model="queryParams.serviceName"
-          placeholder="请输入维修项目名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="serviceName">
+        <el-input v-model="queryParams.serviceName" placeholder="请输入维修项目名称" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="维修时长" prop="serviceDuration">
-        <el-input
-          v-model="queryParams.serviceDuration"
-          placeholder="请输入维修时长"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="serviceDuration">
+        <el-input v-model="queryParams.serviceDuration" placeholder="请输入维修时长" clearable
+          @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="维修时间" prop="serviceTime">
-        <el-date-picker clearable
-          v-model="queryParams.serviceTime"
-          type="date"
-          value-format="yyyy-MM-dd"
+      <el-form-item prop="serviceTime">
+        <el-date-picker clearable v-model="queryParams.serviceTime" type="date" value-format="yyyy-MM-dd"
           placeholder="请选择维修时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="进行保养的车辆id" prop="fkVehicleId">
-        <el-input
-          v-model="queryParams.fkVehicleId"
-          placeholder="请输入进行保养的车辆id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="vehiclePlateNumber">
+        <el-input v-model="queryParams.vehiclePlateNumber" placeholder="请输入车牌号" clearable
+          @change="handleQuery" />
       </el-form-item>
-      <el-form-item label="驾驶员id" prop="fkDriverId">
-        <el-input
-          v-model="queryParams.fkDriverId"
-          placeholder="请输入驾驶员id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item prop="driverName">
+        <el-input v-model="queryParams.driverName" placeholder="请输入驾驶员姓名" clearable @change="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -49,46 +29,20 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['vehicle:serviceRecord:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+          v-hasPermi="['vehicle:serviceRecord:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['vehicle:serviceRecord:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['vehicle:serviceRecord:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['vehicle:serviceRecord:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['vehicle:serviceRecord:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['vehicle:serviceRecord:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
+          v-hasPermi="['vehicle:serviceRecord:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -97,41 +51,30 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" type="index" />
       <el-table-column label="维修项目名称" align="center" prop="serviceName" />
-      <el-table-column label="维修时长" align="center" prop="serviceDuration" />
+      <el-table-column label="维修时长" align="center" prop="serviceDuration">
+        <template slot-scope="scope">
+          <span>{{ scope.row.serviceDuration }}分钟</span>
+        </template>
+      </el-table-column>
       <el-table-column label="维修时间" align="center" prop="serviceTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.serviceTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="进行保养的车辆id" align="center" prop="fkVehicleId" />
-      <el-table-column label="驾驶员id" align="center" prop="fkDriverId" />
+      <el-table-column label="进行保养的车辆" align="center" prop="vehiclePlateNumber" />
+      <el-table-column label="驾驶员" align="center" prop="driverName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['vehicle:serviceRecord:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['vehicle:serviceRecord:remove']"
-          >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['vehicle:serviceRecord:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['vehicle:serviceRecord:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改车辆维修记录对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -140,21 +83,24 @@
           <el-input v-model="form.serviceName" placeholder="请输入维修项目名称" />
         </el-form-item>
         <el-form-item label="维修时长" prop="serviceDuration">
-          <el-input v-model="form.serviceDuration" placeholder="请输入维修时长" />
+          <el-input type="number" v-model="form.serviceDuration" placeholder="请输入维修时长" />
         </el-form-item>
         <el-form-item label="维修时间" prop="serviceTime">
-          <el-date-picker clearable
-            v-model="form.serviceTime"
-            type="date"
-            value-format="yyyy-MM-dd"
+          <el-date-picker clearable v-model="form.serviceTime" type="date" value-format="yyyy-MM-dd"
             placeholder="请选择维修时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="进行保养的车辆id" prop="fkVehicleId">
-          <el-input v-model="form.fkVehicleId" placeholder="请输入进行保养的车辆id" />
+        <el-form-item label="选择进行保养的车辆" prop="fkVehicleId">
+          <el-select v-model="form.fkVehicleId">
+            <el-option v-for="item in vehicleList" :key="item.id" :value="item.id" :label="item.vehiclePlateNumber">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="驾驶员id" prop="fkDriverId">
-          <el-input v-model="form.fkDriverId" placeholder="请输入驾驶员id" />
+        <el-form-item label="驾驶员" prop="fkDriverId">
+          <el-select v-model="form.fkDriverId">
+            <el-option v-for="item in driverList" :key="item.id" :value="item.id" :label="item.driverName">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -167,11 +113,16 @@
 
 <script>
 import { listServiceRecord, getServiceRecord, delServiceRecord, addServiceRecord, updateServiceRecord } from "@/api/vehicle/serviceRecord";
-
+import { listDriver } from "@/api/vehicle/driver";
+import { listVehicle } from "@/api/vehicle/vehicle";
 export default {
   name: "ServiceRecord",
   data() {
     return {
+      //驾驶员列表
+      driverList: [],
+      //车辆列表
+      vehicleList: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -220,6 +171,20 @@ export default {
         this.loading = false;
       });
     },
+    /** 获取所有驾驶员 */
+    getDriver() {
+      let query = {}
+      listDriver(query).then(res => {
+        this.driverList = res.rows
+      })
+    },
+    /** 获取所有车辆 */
+    getVehicle() {
+      let query = {}
+      listVehicle(query).then(res => {
+        this.vehicleList = res.rows
+      })
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -250,12 +215,14 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.getDriver();
+      this.getVehicle();
       this.open = true;
       this.title = "添加车辆维修记录";
     },
@@ -292,12 +259,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除车辆维修记录编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除车辆维修记录编号为"' + ids + '"的数据项？').then(function () {
         return delServiceRecord(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {

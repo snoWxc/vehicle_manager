@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.vehicle;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.xue.vehicle.entity.vo.ServiceRecordVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +41,10 @@ public class ServiceRecordController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('vehicle:serviceRecord:list')")
     @GetMapping("/list")
-    public TableDataInfo list(ServiceRecord serviceRecord)
+    public TableDataInfo list(ServiceRecordVO serviceRecord)
     {
         startPage();
-        List<ServiceRecord> list = serviceRecordService.selectServiceRecordList(serviceRecord);
+        List<ServiceRecordVO> list = serviceRecordService.selectServiceRecordList(serviceRecord);
         return getDataTable(list);
     }
 
@@ -52,11 +54,11 @@ public class ServiceRecordController extends BaseController
     @PreAuthorize("@ss.hasPermi('vehicle:serviceRecord:export')")
     @Log(title = "车辆维修记录", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, ServiceRecord serviceRecord)
+    public void export(HttpServletResponse response, ServiceRecordVO serviceRecord)
     {
-        List<ServiceRecord> list = serviceRecordService.selectServiceRecordList(serviceRecord);
-        ExcelUtil<ServiceRecord> util = new ExcelUtil<ServiceRecord>(ServiceRecord.class);
-        util.exportExcel(response, list, "车辆维修记录数据");
+//        List<ServiceRecord> list = serviceRecordService.selectServiceRecordList(serviceRecord);
+//        ExcelUtil<ServiceRecord> util = new ExcelUtil<ServiceRecord>(ServiceRecord.class);
+//        util.exportExcel(response, list, "车辆维修记录数据");
     }
 
     /**
