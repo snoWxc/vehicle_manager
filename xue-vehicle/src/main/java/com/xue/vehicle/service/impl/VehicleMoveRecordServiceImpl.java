@@ -1,7 +1,10 @@
 package com.xue.vehicle.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.constant.VehicleConstants;
 import com.ruoyi.common.utils.DateUtils;
+import com.xue.vehicle.entity.Vehicle;
 import com.xue.vehicle.entity.vo.VehicleMoveRecordVO;
 import com.xue.vehicle.service.IVehicleService;
 import org.springframework.stereotype.Service;
@@ -60,7 +63,14 @@ public class VehicleMoveRecordServiceImpl implements IVehicleMoveRecordService
     public int insertVehicleMoveRecord(VehicleMoveRecord vehicleMoveRecord)
     {
         vehicleMoveRecord.setCreateTime(DateUtils.getNowDate());
-
+        Vehicle vehicle = vehicleService.selectVehicleById(vehicleMoveRecord.getVehicleId());
+        if(VehicleConstants.MOVE_RECORD_BACK.equals(vehicleMoveRecord.getType())){
+            vehicle.setStatus(VehicleConstants.VEHICLE_IS_BACK);
+        }
+        if(VehicleConstants.MOVE_RECORD_OUT.equals(vehicleMoveRecord.getType())){
+            vehicle.setStatus(VehicleConstants.VEHICLE_IS_OUT);
+        }
+        vehicleService.updateVehicle(vehicle);
         return vehicleMoveRecordMapper.insertVehicleMoveRecord(vehicleMoveRecord);
     }
 

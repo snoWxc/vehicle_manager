@@ -183,6 +183,26 @@ export default {
       this.open = false;
       this.reset();
     },
+    /** 设置车辆已报废 */
+    setScrap(row) {
+      row.isScrap = 1;
+      this.$confirm('是否要设置该车辆已报废', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        updateVehicle(row).then(res => {
+          if (res.code == 200) {
+            this.$message({
+              type: 'success',
+              message: '已更新车辆信息!'
+            });
+            this.getList();
+          }
+        }
+        )
+      })
+    },
     // 表单重置
     reset() {
       this.form = {
